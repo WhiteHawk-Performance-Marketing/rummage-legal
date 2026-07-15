@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rummage — authorization received</title>
+<style>
+  body { font: 17px/1.6 Georgia, serif; color: #23222B; background: #F7F5F0;
+         max-width: 680px; margin: 0 auto; padding: 3rem 1.25rem; }
+  h1 { font-size: 1.6rem; }
+  .ok { color: #1F7A33; } .err { color: #A33; }
+  code { font-family: Consolas, monospace; background: #EDEAE2;
+         padding: .1em .35em; border-radius: 4px; word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>Rummage — OAuth callback</h1>
+<p id="status">Checking the redirect parameters…</p>
+<p>To finish connecting: <strong>copy the FULL URL from this page's address
+bar</strong> and paste it into the terminal running
+<code>tools/tiktok_oauth.py</code>. Then you can close this tab.</p>
+<script>
+  var q = new URLSearchParams(window.location.search);
+  var el = document.getElementById("status");
+  if (q.get("code")) {
+    el.innerHTML = '<span class="ok">Authorization code received.</span> ' +
+                   'Nothing is stored on this page — the code only exists in your address bar.';
+  } else if (q.get("error")) {
+    el.innerHTML = '<span class="err">Authorization failed:</span> ' +
+                   '<code></code>';
+    el.querySelector("code").textContent =
+      (q.get("error_description") || q.get("error"));
+  } else {
+    el.textContent = "No authorization parameters found — start the flow from tools/tiktok_oauth.py.";
+  }
+</script>
+</body>
+</html>
